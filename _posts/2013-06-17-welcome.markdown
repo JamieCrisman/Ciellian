@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Welcome!"
+date:   2013-06-17 14:01:43
+categories: conlang
+---
+
+Personal documentation site for my constructed language.
