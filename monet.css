@@ -1,0 +1,58 @@
+.errorContent{
+	color: red;
+	display: none;
+}
+.show{
+	display: inherit;
+}
+.hide{
+	display: none;
+}
+#footer{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	color: #aaa;
+	font-size: 12px;
+	text-align: center;
+	background-color: rgba(255,255,255, 0.2);
+}
+#footer a{
+	color: #99f;
+	text-decoration: none;
+}
+#content{
+	margin: 0 auto;
+	padding: 5px;
+}
+#footer a:hover{
+	color: #55a;
+}
+.loginContent{
+	background-color: rgba(255,255,255, 0.8);
+	padding: 10px;
+	text-align:center;
+	width: 250px;
+	margin: 0 auto;
+}
+#signInContainer{
+	width: 100%;
+	position: absolute;
+
+}
+#signInContainer input{
+	max-width: 250px;
+}
+.simpleMenuContainer{
+	margin: 0 auto;	
+	width: 250px;
+	padding: 5px;
+}
+.box{
+	margin: 5px;
+	border: 1px solid #ddd;
+	padding: 10px;
+}
+.box dl{
+	text-align: left;
+}

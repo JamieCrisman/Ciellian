@@ -1,6 +1,3 @@
-mindbodylang
-============
+# MBL Lex
 
-
-Everything is on the gh-pages branch.
-This repo is just a simple host for the static info on the project.
+Lexicon app and api for the MB conlang

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html ng-app="monet">
+	<head>
+		<title>A.H. MO[N]ET Test</title>
+		<link rel="stylesheet" href="pure-min.css">
+		<link rel="stylesheet" href="monet.css">
+		<link rel="stylesheet" href="animate-custom.css">
+		<script src="jquery.js"></script>
+		<script src="Chart.min.js"></script>
+		<script src="angular.min.js"></script>
+		<script src="animate.js"></script>
+		<script src="monet.js"></script>
+	</head>
+	<body ng-controller="monetSystem">
+		<input ng-model="user.token" type="text">
+		<div id="content">
+			<div class="pure-g" id="connectionErrorContainer" ng-show="connectionError">
+				<div class="pure-u-1" style="text-align: center">
+					<h1>There was a problem :C</h1>
+					<h3>{{connectionError}}</h3>
+					<a href="javascript:void(0)" ng-click="clearConnectionError()" class="pure-button">Clear Error</a>
+				</div>
+			</div>
+			<div class="animated" show-if="!user.token" id="signInContainer">
+				<div class="loginContent">
+					<h2 style="text-align: center;">Login to MO[N]ET</h2>
+					<div id="loginErrors" class="errorContent"></div>
+					<form class="pure-form pure-form-stacked" method="post" id="loginUser" ng-submit="login()">
+						<fieldset>
+							<input id="user" type="text" placeholder="User" name="username" class="pure-u-1" ng-model="user.username">
+							<input id="password" type="password" placeholder="Password" name="password" class="pure-u-1">
+
+							<button type="submit" class="pure-button pure-button-primary pure-u-1">Sign in</button>
+						</fieldset>
+					</form>
+					<div id="registerErrors" class="errorContent"></div>
+					<a id="signup-stripInvalid" class="pure-button pure-button-small hide" href="javascript:void(0)">Remove invalid characters</a>
+					<form class="pure-form pure-form-stacked" method="post" id="registerUser" ng-submit="signup()">
+						<fieldset>
+							<input id="newUser" type="text" placeholder="User" name='username' class="pure-u-1">
+							<input id="newPassword" type="password" name="password" placeholder="Password" class="pure-u-1">
+							<input id="confirmPassword" type="password" name="confirmPassword" placeholder="Confirm Password" class="pure-u-1">
+
+							<button type="submit" class="pure-button pure-button-primary pure-u-1">Register</button>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+			<div class="animated pure-g" id="mainMenu" show-if="user.token" style="text-align:center;">
+				<div class="simpleMenuContainer">
+					<div class="pure-u-1">
+						<div class="pure-menu pure-menu-open">
+							<a class="pure-menu-heading"><strong>MO[N]ET</strong>: &Alpha;lpha</a>
+							<ul>
+								<li><a href="#">Monster</a></li>
+								<li><a href="#">Challenges</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="animated pure-g" id="mainMenu" show-if="user.token" style="text-align:center;">
+				<div class="simpleMenuContainer">
+					<div class="pure-u-1">
+						<div class="box">
+							<h1>Monster</h1>
+							<dl>
+								<dt>Name:</dt>
+								<dd>Some Name</dd>
+								<dt>Description:</dt>
+								<dd>Your monster has 4 eyes, one mouth, seven ears, two arms with claws, two legs with talons, and eight tails.</dd>
+								<dt>Strength:</dt>
+								<dd>35</dd>
+								<dt>Stamina:</dt>
+								<dd>35</dd>
+								<dt>Defense:</dt>
+								<dd>35</dd>
+								<dt>Speed:</dt>
+								<dd>35</dd>
+								<dt>Perception:</dt>
+								<dd>35</dd>
+								<dt>Intelligence:</dt>
+								<dd>35</dd>
+							</dl>
+							<canvas id="statChart" width="250" height="250"></canvas>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="footer">
+			MO[N]ET &Alpha;lpha API BY <a href="http://awkwardhero.com">JAMIE CRISMAN</a>
+		</div>
+	</body>
+</html>
