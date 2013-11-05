@@ -1,3 +1,6 @@
-# MBL Lex
+# MBL
 
-Lexicon app and api for the MB conlang
+The master branch has all the lexicon api. gh-pages has the language documentation.
+
+## API calls (so far):
+``GET /word/[word]``
