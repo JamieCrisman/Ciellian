@@ -1,3 +1,26 @@
+function blank(obj) { 
+    var cache;
+
+    if((cache = typeof obj) !== 'boolean' && (cache !== 'number' || isNaN(obj)) && !obj)
+        return true;
+    if(cache == 'string' && obj.replace(/\s/g, '').length === 0)
+        return true;
+    if(cache == 'object') {
+        if((cache = toString.call(obj)) == '[object Array]' && obj.length === 0)
+            return true;
+        if(cache == '[object Object]') {
+            for(cache in obj) {
+                return false;
+            }
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+
 var restify = require("restify"),
 	userSave = require("save")('user'),
 	mongoose = require("mongoose");//,
@@ -80,9 +103,7 @@ server.get('/word/:word', function(req, res, next){
 			return next( new restify.InvalidArgumentError( JSON.stringify(error.errors) ) );
 		}
 		if(word){
-			
-			console.log(word[0]["_id"]);
-
+			console.log("Sending: '" + word[0]["name"] + "' which means " + word[0].meaning);
 			res.send(word[0]);
 		}else{
 			res.send(404);
@@ -90,9 +111,104 @@ server.get('/word/:word', function(req, res, next){
 	});
 });
 
-server.post('/word/new', function(req, res, next){
+//update Function
+server.post('/word/:word', function(req, res, next){
 
+	//TODO
+
+	//find word
+	//update stuff
+	//send update resp
+
+	var wordErrors = [];
+	if(blank(req.params.name)){
+		wordErrors += " word name cannot be blank; ";
+	}
+	if(blank(req.params.meaning)){
+		wordErrors += " word needs a meaning; ";
+	}
+	if(!blank(wordErrors)){
+		return next(new restify.InvalidArgumentError(wordErrors));
+	}
+	
+	Word.find({name: req.params.name.toLowerCase()}, function(error, word){
+		if(!blank(word)){
+			return next(new restify.InvalidArgumentError("Word Already Exists; Please Use Update"));
+		}else{
+			var shinword = new Word({
+				name: req.params.name, 
+				meaning: req.params.meaning, 
+				explaination: ((blank(req.params.explaination))? "" : req.params.explaination), 
+				root: ((blank(req.params.root))? [] : req.params.root), 
+				synonym: ((blank(req.params.synonym))? [] : req.params.synonym), 
+				antonym: ((blank(req.params.antonym))? [] : req.params.antonym), 
+				counterpart: ((blank(req.params.counterpart))? [] : req.params.counterpart),
+				category: ((blank(req.params.category))? "" : req.params.category),
+				relatedTerms: ((blank(req.params.relatedTerms))? [] : req.params.relatedTerms)
+			});
+			shinword.save();
+			console.log("Created word: ");
+			console.log(shinword);
+			res.send(shinword);	
+		}
+	});
+	
 });
+
+
+server.get('/word/', function(req, res, next){
+	Word.find({}, {'_id': 0, '__v': 0}, function(error, word){
+		if(error){
+			return next( new restify.InvalidArgumentError( JSON.stringify(error.errors) ) );
+		}
+		if(word){
+			
+			//console.log(word[0]["_id"]);
+			console.log("Sending all words");
+			res.send(word);
+		}else{
+			res.send(404);
+		}
+	});
+});
+
+server.post('/word/new', function(req, res, next){
+	var wordErrors = [];
+	if(blank(req.params.name)){
+		wordErrors += " word name cannot be blank; ";
+	}
+	if(blank(req.params.meaning)){
+		wordErrors += " word needs a meaning; ";
+	}
+	if(!blank(wordErrors)){
+		return next(new restify.InvalidArgumentError(wordErrors));
+	}
+	
+	Word.find({name: req.params.name.toLowerCase()}, function(error, word){
+		if(!blank(word)){
+			return next(new restify.InvalidArgumentError("Word Already Exists; Please Use Update"));
+		}else{
+			var shinword = new Word({
+				name: req.params.name, 
+				meaning: req.params.meaning, 
+				explaination: ((blank(req.params.explaination))? "" : req.params.explaination), 
+				root: ((blank(req.params.root))? [] : req.params.root), 
+				synonym: ((blank(req.params.synonym))? [] : req.params.synonym), 
+				antonym: ((blank(req.params.antonym))? [] : req.params.antonym), 
+				counterpart: ((blank(req.params.counterpart))? [] : req.params.counterpart),
+				category: ((blank(req.params.category))? "" : req.params.category),
+				relatedTerms: ((blank(req.params.relatedTerms))? [] : req.params.relatedTerms)
+			});
+			shinword.save();
+			console.log("Created word: ");
+			console.log(shinword);
+			res.send(shinword);	
+		}
+	});
+	
+});
+
+
 /*
 server.post('/login', function(req,res,next){
 	if(req.params.username === undefined || req.params.username == "" && req.params.username == req.params.username.replace(/\W/g, '')){
