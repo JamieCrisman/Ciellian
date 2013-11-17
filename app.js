@@ -102,11 +102,11 @@ server.get('/word/:word', function(req, res, next){
 		if(error){
 			return next( new restify.InvalidArgumentError( JSON.stringify(error.errors) ) );
 		}
-		if(word){
+		if(word[0]){
 			console.log("Sending: '" + word[0]["name"] + "' which means " + word[0].meaning);
 			res.send(word[0]);
 		}else{
-			res.send(404);
+			return next(new restify.InvalidArgumentError("Unable to find: " + req.params.word));
 		}
 	});
 });
@@ -120,36 +120,31 @@ server.post('/word/:word', function(req, res, next){
 	//update stuff
 	//send update resp
 
-	var wordErrors = [];
+	var wordErrors = "";
 	if(blank(req.params.name)){
 		wordErrors += " word name cannot be blank; ";
-	}
-	if(blank(req.params.meaning)){
-		wordErrors += " word needs a meaning; ";
 	}
 	if(!blank(wordErrors)){
 		return next(new restify.InvalidArgumentError(wordErrors));
 	}
 	
 	Word.find({name: req.params.name.toLowerCase()}, function(error, word){
-		if(!blank(word)){
-			return next(new restify.InvalidArgumentError("Word Already Exists; Please Use Update"));
+		if(!blank(word[0])){
+			var w = word[0]; //should only be the first word
+			w.meaning = (blank(req.params.meaning))? w.meaning : req.params.meaning;
+			w.explaination  = (blank(req.params.explaination))? w.explaination : req.params.explaination;
+			w.root  = (blank(req.params.root))? w.root : req.params.root;
+			w.synonym  = (blank(req.params.synonym))? w.synonym : req.params.synonym;
+			w.antonym  = (blank(req.params.antonym))? w.antonym : req.params.antonym;
+			w.counterpart  = (blank(req.params.counterpart))? w.counterpart : req.params.counterpart;
+			w.category  = (blank(req.params.category))? w.category : req.params.category;
+			w.relatedTerms  = (blank(req.params.relatedTerms))? w.relatedTerms : req.params.relatedTerms;
+			w.save();
+			console.log("Updated word: ");
+			console.log(w);
+			res.send(w);	
 		}else{
-			var shinword = new Word({
-				name: req.params.name, 
-				meaning: req.params.meaning, 
-				explaination: ((blank(req.params.explaination))? "" : req.params.explaination), 
-				root: ((blank(req.params.root))? [] : req.params.root), 
-				synonym: ((blank(req.params.synonym))? [] : req.params.synonym), 
-				antonym: ((blank(req.params.antonym))? [] : req.params.antonym), 
-				counterpart: ((blank(req.params.counterpart))? [] : req.params.counterpart),
-				category: ((blank(req.params.category))? "" : req.params.category),
-				relatedTerms: ((blank(req.params.relatedTerms))? [] : req.params.relatedTerms)
-			});
-			shinword.save();
-			console.log("Created word: ");
-			console.log(shinword);
-			res.send(shinword);	
+			return next(new restify.InvalidArgumentError("Couldn't find the word? Did you mean to create a new one?"));
 		}
 	});
 	
@@ -173,7 +168,7 @@ server.get('/word/', function(req, res, next){
 });
 
 server.post('/word/new', function(req, res, next){
-	var wordErrors = [];
+	var wordErrors = "";
 	if(blank(req.params.name)){
 		wordErrors += " word name cannot be blank; ";
 	}
@@ -185,9 +180,7 @@ server.post('/word/new', function(req, res, next){
 	}
 	
 	Word.find({name: req.params.name.toLowerCase()}, function(error, word){
-		if(!blank(word)){
-			return next(new restify.InvalidArgumentError("Word Already Exists; Please Use Update"));
-		}else{
+		if(blank(word)){
 			var shinword = new Word({
 				name: req.params.name, 
 				meaning: req.params.meaning, 
@@ -202,9 +195,27 @@ server.post('/word/new', function(req, res, next){
 			shinword.save();
 			console.log("Created word: ");
 			console.log(shinword);
-			res.send(shinword);	
+			res.send(shinword);
+		}else{
+			return next(new restify.InvalidArgumentError("Word Already Exists; Please Use Update"));
 		}
 	});
+	
+});
+
+server.del('/word/:word', function(req, res, next){
+	//this is totally safe</sarcasm>
+	if(req.params.secret == "BOSSKEY25"){
+		Word.remove({name: req.params.word.toLowerCase()}, function(error, word){
+			if(error){
+				return next( new restify.InvalidArgumentError( JSON.stringify(error.errors) ) );
+			}
+			console.log(word);
+			res.send();
+		});
+	}else{
+		return next(new restify.InvalidArgumentError("Invalid Delete Code;"));
+	}
 	
 });
 
