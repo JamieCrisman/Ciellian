@@ -22,36 +22,9 @@ function blank(obj) {
 
 var token = null;
 $(document).ready(function(){
-	$("#signup-stripInvalid").on("click", function(){
-		$("#newUser").val($("#newUser").val().replace(/\W/g, '').toLowerCase());
-	});
 });
 
 var app = angular.module('mblex', []);
-app.directive('showIf', function(){ 
-	return {
-		restrict: 'A', //attribute only
-		link: function(scope, elem, attr, ctrl) {
-			elem.addClass("hide");
-			scope.$watch(attr.showIf, function(v){
-				var e = Animate(elem[0]);
-				if(scope.$eval(attr.showIf)){
-					e.remove("fadeOutDown").remove("hide");
-					e.add("fadeInUp").end("fadeOutDown",function(){
-						console.log("!!");
-					});
-				}else{
-					e.remove("fadeInUp");
-					e.add("fadeOutDown").end("fadeOutDown", function(){
-						console.log("faded out!");
-						elem.addClass("hide");
-					});
-				}
-			});
-		}
-	};
-});
-
 app.controller('mblSystem', function($scope){
 	$scope.pass = "";
 	$scope.connectionError = null;
@@ -92,6 +65,3 @@ app.controller('mblSystem', function($scope){
 
 	
 });
-//function monetSystem($scope){
-	
-//};

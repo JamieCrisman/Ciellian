@@ -113,9 +113,6 @@ server.get('/word/:word', function(req, res, next){
 
 //update Function
 server.post('/word/:word', function(req, res, next){
-
-	//TODO
-
 	//find word
 	//update stuff
 	//send update resp
