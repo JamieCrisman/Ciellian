@@ -31,15 +31,15 @@
 						Words
 					</h3>
 					<div class="wordContainer">
-						<div class="wordLine" ng-repeat="word in words">
-							{{word.name}}: <span ng-repeat="imi in word.meaning"> {{imi}};</span>
-							<span>{{word.antonym}}</span>
-							<span>{{word.synonym}}</span>
-							<span>{{word.category}}</span>
-							<span>{{word.explaination}}</span>
-							<span>{{word.counterpart}}</span>
-							<span>{{word.root}}</span>
-							<span>{{word.relatedTerms}}</span>
+						<div class="wordLine card" ng-repeat="word in words">
+							<div class="wordHeader"><span class="wordName">{{word.name}}</span> <span ng-repeat="imi in word.meaning"> {{imi}};</span></div>
+							<div class="wordExplanation">{{word.explanation}}</div>
+							<div><strong>Antonyms:</strong> {{word.antonym}}</div>
+							<div><strong>Synonyms:</strong> {{word.synonym}}</div>
+							<div><strong>Category:</strong> {{word.category}}</div>
+							<div><strong>Counterpart:</strong> {{word.counterpart}}</div>
+							<div><strong>Root:</strong>{{word.root}}</div>
+							<div><strong>Related:</strong>{{word.relatedTerms}}</div>
 						</div>
 
 					</div>
