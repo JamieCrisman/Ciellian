@@ -9,7 +9,6 @@
 		<script src="mblex.js"></script>
 	</head>
 	<body ng-controller="mblSystem">
-		<input ng-model="user.token" type="text">
 		<div id="content">
 			<div class="pure-g" id="connectionErrorContainer" ng-show="connectionError">
 				<div class="pure-u-1" style="text-align: center">
@@ -27,6 +26,22 @@
 					<div class="sectionHeader">
 						<h2>Apa</h2>
 						<h3>-lexicon-</h3>
+					</div>
+					<h3>
+						Words
+					</h3>
+					<div class="wordContainer">
+						<div class="wordLine" ng-repeat="word in words">
+							{{word.name}}: <span ng-repeat="imi in word.meaning"> {{imi}};</span>
+							<span>{{word.antonym}}</span>
+							<span>{{word.synonym}}</span>
+							<span>{{word.category}}</span>
+							<span>{{word.explaination}}</span>
+							<span>{{word.counterpart}}</span>
+							<span>{{word.root}}</span>
+							<span>{{word.relatedTerms}}</span>
+						</div>
+
 					</div>
 				</div>
 			</section>

@@ -27,8 +27,26 @@ var restify = require("restify"),
 	//hash = require('./pass').hash;
 
 var server = restify.createServer({name: "Lexicon"});
-
 server.use(restify.fullResponse());
+// Add headers
+server.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
 server.use(restify.bodyParser());
 
 restify.defaultResponseHeaders =function(data){
@@ -45,8 +63,8 @@ mongoose.connect("mongodb://localhost/myapp");
 var WordSchema = new mongoose.Schema({
 	name: String,
 	meaning: Array,
-	explaination: String,
-	root: Array,
+	explanation: String,
+	root: Array, 
 	synonym: Array,
 	antonym: Array,
 	counterpart: Array,
@@ -60,7 +78,7 @@ Word.collection.drop(null); // clear out all words for now
 var meet = new Word({
 	name: "pa", 
 	meaning: ["meet"], 
-	explaination: "root of meet. meaning to interact with another person.", 
+	explanation: "root of meet. meaning to interact with another person.", 
 	root: [], 
 	synonym: [], 
 	antonym: [], 
@@ -71,7 +89,7 @@ var meet = new Word({
 var hello = new Word({
 	name: "apa", 
 	meaning: ["Hello"], 
-	explaination: "Greeting", 
+	explanation: "Greeting", 
 	root: ["pa"], 
 	synonym: [], 
 	antonym: ["opa"], 
@@ -82,7 +100,7 @@ var hello = new Word({
 var bye = new Word({
 	name: "opa", 
 	meaning: ["Goodbye"], 
-	explaination: "Farewell", 
+	explanation: "Farewell", 
 	root: ["pa"], 
 	synonym: [], 
 	antonym: ["apa"], 
@@ -95,6 +113,22 @@ var bye = new Word({
 //server functions
 server.listen(3000, function(){
 	console.log('%s is listening at %s', server.name, server.url);
+});
+
+server.get('/word/', function(req, res, next){
+	Word.find({}, {'_id': 0, '__v': 0}, function(error, word){
+		if(error){
+			return next( new restify.InvalidArgumentError( JSON.stringify(error.errors) ) );
+		}
+		if(word){
+			
+			//console.log(word[0]["_id"]);
+			console.log("Sending all words");
+			res.send(word);
+		}else{
+			res.send(404);
+		}
+	});
 });
 
 server.get('/word/:word', function(req, res, next){
@@ -129,7 +163,7 @@ server.post('/word/:word', function(req, res, next){
 		if(!blank(word[0])){
 			var w = word[0]; //should only be the first word
 			w.meaning = (blank(req.params.meaning))? w.meaning : req.params.meaning;
-			w.explaination  = (blank(req.params.explaination))? w.explaination : req.params.explaination;
+			w.explanation  = (blank(req.params.explanation))? w.explanation : req.params.explanation;
 			w.root  = (blank(req.params.root))? w.root : req.params.root;
 			w.synonym  = (blank(req.params.synonym))? w.synonym : req.params.synonym;
 			w.antonym  = (blank(req.params.antonym))? w.antonym : req.params.antonym;
@@ -145,23 +179,6 @@ server.post('/word/:word', function(req, res, next){
 		}
 	});
 	
-});
-
-
-server.get('/word/', function(req, res, next){
-	Word.find({}, {'_id': 0, '__v': 0}, function(error, word){
-		if(error){
-			return next( new restify.InvalidArgumentError( JSON.stringify(error.errors) ) );
-		}
-		if(word){
-			
-			//console.log(word[0]["_id"]);
-			console.log("Sending all words");
-			res.send(word);
-		}else{
-			res.send(404);
-		}
-	});
 });
 
 server.post('/word/new', function(req, res, next){
@@ -181,7 +198,7 @@ server.post('/word/new', function(req, res, next){
 			var shinword = new Word({
 				name: req.params.name, 
 				meaning: req.params.meaning, 
-				explaination: ((blank(req.params.explaination))? "" : req.params.explaination), 
+				explanation: ((blank(req.params.explanation))? "" : req.params.explanation), 
 				root: ((blank(req.params.root))? [] : req.params.root), 
 				synonym: ((blank(req.params.synonym))? [] : req.params.synonym), 
 				antonym: ((blank(req.params.antonym))? [] : req.params.antonym), 

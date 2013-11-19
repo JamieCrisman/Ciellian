@@ -28,8 +28,10 @@ var app = angular.module('mblex', []);
 app.controller('mblSystem', function($scope){
 	$scope.pass = "";
 	$scope.connectionError = null;
+	$scope.words = [];
 	$(function() {
 		$.ajaxSetup({
+			dataType: 'json',
 			error: function(jqXHR, exception) {
 				if (jqXHR.status === 0) {
 					$scope.$apply(function(){
@@ -62,6 +64,12 @@ app.controller('mblSystem', function($scope){
 	$scope.clearConnectionError = function(){
 		$scope.connectionError = null;
 	}
-
+	$.get("http://127.0.0.1:3000/word", function(data){
+		$scope.$apply(function(){
+			$scope.words = data;
+		})
+		//$scope.words = data;
+		console.log(data);
+	});
 	
 });
