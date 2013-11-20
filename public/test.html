@@ -31,25 +31,28 @@
 						Words
 					</h3>
 					<div class="wordContainer">
+						<a class="card pure-button pure-button-secondary" href="javascript:void(0);" ng-show="page != 0" ng-click="setPage(page-1)">Previous Words</a>
 						<div class="wordLine card" ng-repeat="word in words">
 							<div class="wordHeader"><span class="wordName">{{word.name}}</span> <span ng-repeat="imi in word.meaning"> {{imi}};</span></div>
-							<div class="wordExplanation">{{word.explanation}}</div>
-							<div><strong>Antonyms:</strong> {{word.antonym}}</div>
-							<div><strong>Synonyms:</strong> {{word.synonym}}</div>
-							<div><strong>Category:</strong> {{word.category}}</div>
-							<div><strong>Counterpart:</strong> {{word.counterpart}}</div>
-							<div><strong>Root:</strong>{{word.root}}</div>
-							<div><strong>Related:</strong>{{word.relatedTerms}}</div>
+							<div class="wordInfo hide">
+								<div class="wordExplanation">{{word.explanation}}</div>
+								<div><strong>Antonyms:</strong> {{word.antonym}}</div>
+								<div><strong>Synonyms:</strong> {{word.synonym}}</div>
+								<div><strong>Category:</strong> {{word.category}}</div>
+								<div><strong>Counterpart:</strong> {{word.counterpart}}</div>
+								<div><strong>Root:</strong>{{word.root}}</div>
+								<div><strong>Related:</strong>{{word.relatedTerms}}</div>
+							</div>
 						</div>
-
+						<a class="card pure-button pure-button-secondary" href="javascript:void(0);" ng-show="(page) <= ((totalCount - currentCount) / plim)-1" ng-click="setPage(page+1)">More Words</a>
 					</div>
 				</div>
 			</section>
 
 
 		</div>
-		<div id="footer">
+		<footer id="footer">
 			MBLexicon &Alpha;lpha API BY <a href="http://awkwardhero.com">JAMIE CRISMAN</a>
-		</div>
+		</footer>
 	</body>
 </html>

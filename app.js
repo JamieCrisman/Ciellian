@@ -25,7 +25,7 @@ var restify = require("restify"),
 	userSave = require("save")('user'),
 	mongoose = require("mongoose");//,
 	//hash = require('./pass').hash;
-
+var url = require('url');
 var server = restify.createServer({name: "Lexicon"});
 server.use(restify.fullResponse());
 // Add headers
@@ -109,6 +109,7 @@ var bye = new Word({
 	relatedTerms: ["apa"]
 }).save();
 
+var WORD_LIMIT = 2;
 
 //server functions
 server.listen(3000, function(){
@@ -116,15 +117,37 @@ server.listen(3000, function(){
 });
 
 server.get('/word/', function(req, res, next){
-	Word.find({}, {'_id': 0, '__v': 0}, function(error, word){
+	Word.count({}, function(error, totalCount){
+		if(error){
+			return next( new restify.InvalidArgumentError( JSON.stringify(error.errors) ) );
+		}
+		if(totalCount){
+			console.log("Sending Limit and Current Total Word Count");
+			var ret = {
+				"total": totalCount,
+				"limit": WORD_LIMIT
+			};
+			res.send(ret);
+		}else{
+			res.send(404);
+		}
+	});
+});
+
+server.get("/getwords/", function(req, res, next){
+	params = url.parse(req.url, true).query
+	var offset = ((!blank(params.page))? (params.page * WORD_LIMIT) : 0); // if we have a page set the offset
+	Word.find({}, {'_id': 0, '__v': 0}, {skip: offset, limit: WORD_LIMIT}, function(error, word){
 		if(error){
 			return next( new restify.InvalidArgumentError( JSON.stringify(error.errors) ) );
 		}
 		if(word){
-			
-			//console.log(word[0]["_id"]);
-			console.log("Sending all words");
-			res.send(word);
+			console.log("Sending words: " + offset + " - " + (offset+WORD_LIMIT - 1 ));
+			var ret = {
+				"words": word,
+				"count": word.length
+			};
+			res.send(ret);
 		}else{
 			res.send(404);
 		}

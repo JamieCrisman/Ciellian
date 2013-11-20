@@ -29,6 +29,10 @@ app.controller('mblSystem', function($scope){
 	$scope.pass = "";
 	$scope.connectionError = null;
 	$scope.words = [];
+	$scope.page = 0;
+	$scope.totalCount = 0;
+	$scope.currentTotal = 0;
+	$scope.plim = 0;
 	$(function() {
 		$.ajaxSetup({
 			dataType: 'json',
@@ -64,12 +68,36 @@ app.controller('mblSystem', function($scope){
 	$scope.clearConnectionError = function(){
 		$scope.connectionError = null;
 	}
+	//initial load
 	$.get("http://127.0.0.1:3000/word", function(data){
 		$scope.$apply(function(){
-			$scope.words = data;
-		})
+			//$scope.words = data.words;
+			$scope.plim = data.limit;
+			$scope.totalCount = data.total;
+		});
 		//$scope.words = data;
+		$scope.getMoreWords($scope.page);
 		console.log(data);
 	});
-	
+	$scope.setPage = function(page){
+		console.log(page);
+		$scope.page = page;
+		$scope.getMoreWords($scope.page);
+		//TODO: logic to know if we need to query for more words or if we have them loaded already
+	}
+	$scope.getMoreWords = function(page){
+		var d = {"page": page};
+		console.log(page);
+		console.log(d);
+		$.get("http://127.0.0.1:3000/getwords", d, function(data){
+			console.log(data);
+			$scope.$apply(function(){
+				$scope.words = data.words;
+				$scope.currentTotal = data.count;
+			});
+			//TODO: cache words
+		})
+		console.log("!!!");
+	}
+
 });
