@@ -67,7 +67,7 @@
 							Words
 						</h3>
 						<a class="card pure-button pure-button-secondary" href="javascript:void(0);" ng-show="page != 0" ng-click="setPage(page-1)">Previous Words</a>
-						<div class="wordLine card" ng-repeat="word in words" ng-click="getWord(word.name)">
+						<div class="wordLine card" ng-repeat="word in words | limitTo: plim" ng-click="getWord(word.name)">
 							<div class="wordHeader"><span class="wordName">{{word.name}}</span> <span ng-repeat="imi in word.meaning"> {{imi}};</span></div>
 							<div class="wordInfo hide">
 								<div class="wordExplanation">{{word.explanation}}</div>

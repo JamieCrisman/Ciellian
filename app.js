@@ -123,7 +123,7 @@ for(var xx = 0; xx < 500; xx++){
 	}).save();
 }*/
 
-var WORD_LIMIT = 500;
+var WORD_LIMIT = 200;
 
 //server functions
 server.listen(3000, function(){
