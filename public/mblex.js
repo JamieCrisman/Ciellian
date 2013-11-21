@@ -33,6 +33,7 @@ app.controller('mblSystem', function($scope){
 	$scope.totalCount = 0;
 	$scope.currentTotal = 0;
 	$scope.plim = 0;
+	$scope.focusWord = null;
 	$(function() {
 		$.ajaxSetup({
 			dataType: 'json',
@@ -87,17 +88,22 @@ app.controller('mblSystem', function($scope){
 	}
 	$scope.getMoreWords = function(page){
 		var d = {"page": page};
-		console.log(page);
-		console.log(d);
 		$.get("http://127.0.0.1:3000/getwords", d, function(data){
-			console.log(data);
+			//console.log(data);
 			$scope.$apply(function(){
 				$scope.words = data.words;
 				$scope.currentTotal = data.count;
 			});
 			//TODO: cache words
-		})
-		console.log("!!!");
+		});
+	}
+	$scope.getWord = function(word){
+		$.get("http://127.0.0.1:3000/word/"+word, function(data){
+			console.log(data);
+			$scope.$apply(function(){
+				$scope.focusWord = data;
+			});
+		});
 	}
 
 });

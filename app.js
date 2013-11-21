@@ -84,7 +84,7 @@ var meet = new Word({
 	antonym: [], 
 	counterpart: [],
 	category: "root",
-	relatedTerms: ["opa", "opa"]
+	relatedTerms: ["opa", "apa"]
 }).save();
 var hello = new Word({
 	name: "apa", 
@@ -108,8 +108,21 @@ var bye = new Word({
 	category: "exclamation",
 	relatedTerms: ["apa"]
 }).save();
+for(var xx = 0; xx < 500; xx++){
+	var bye = new Word({
+		name: "opa" + xx, 
+		meaning: ["Goodbye" + xx], 
+		explanation: "Farewell" + xx, 
+		root: ["pa" + xx], 
+		synonym: [], 
+		antonym: ["apa" + xx], 
+		counterpart: [],
+		category: "exclamation",
+		relatedTerms: ["apa" + xx]
+	}).save();
+}
 
-var WORD_LIMIT = 2;
+var WORD_LIMIT = 500;
 
 //server functions
 server.listen(3000, function(){
