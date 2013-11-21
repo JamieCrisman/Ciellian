@@ -28,7 +28,7 @@ var app = angular.module('mblex', []);
 app.controller('mblSystem', function($scope){
 	$scope.pass = "";
 	$scope.connectionError = null;
-	$scope.words = [];
+	$scope.words = {};
 	$scope.page = 0;
 	$scope.totalCount = 0;
 	$scope.currentTotal = 0;
@@ -91,19 +91,25 @@ app.controller('mblSystem', function($scope){
 		$.get("http://127.0.0.1:3000/getwords", d, function(data){
 			//console.log(data);
 			$scope.$apply(function(){
-				$scope.words = data.words;
+				//$scope.words = data.words;
+				$.each(data.words, function(index, value){
+					//console.log(value.name);
+					$scope.words[value.name] = value;
+				});
 				$scope.currentTotal = data.count;
 			});
 			//TODO: cache words
 		});
 	}
 	$scope.getWord = function(word){
-		$.get("http://127.0.0.1:3000/word/"+word, function(data){
-			console.log(data);
-			$scope.$apply(function(){
+		if(!blank($scope.words[word])){
+			$scope.focusWord = $scope.words[word];
+		}else{
+			$.get("http://127.0.0.1:3000/word/"+word, function(data){
+				console.log(data);
 				$scope.focusWord = data;
 			});
-		});
+		}
 	}
 
 });

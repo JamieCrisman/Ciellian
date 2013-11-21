@@ -108,6 +108,7 @@ var bye = new Word({
 	category: "exclamation",
 	relatedTerms: ["apa"]
 }).save();
+/*
 for(var xx = 0; xx < 500; xx++){
 	var bye = new Word({
 		name: "opa" + xx, 
@@ -120,7 +121,7 @@ for(var xx = 0; xx < 500; xx++){
 		category: "exclamation",
 		relatedTerms: ["apa" + xx]
 	}).save();
-}
+}*/
 
 var WORD_LIMIT = 500;
 
