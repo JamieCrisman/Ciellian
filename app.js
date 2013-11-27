@@ -108,7 +108,7 @@ var bye = new Word({
 	category: "exclamation",
 	relatedTerms: ["apa"]
 }).save();
-/*
+
 for(var xx = 0; xx < 500; xx++){
 	var bye = new Word({
 		name: "opa" + xx, 
@@ -121,9 +121,9 @@ for(var xx = 0; xx < 500; xx++){
 		category: "exclamation",
 		relatedTerms: ["apa" + xx]
 	}).save();
-}*/
+}
 
-var WORD_LIMIT = 200;
+var WORD_LIMIT = 1024;
 
 //server functions
 server.listen(3000, function(){
@@ -150,7 +150,8 @@ server.get('/word/', function(req, res, next){
 
 server.get("/getwords/", function(req, res, next){
 	params = url.parse(req.url, true).query
-	var offset = ((!blank(params.page))? (params.page * WORD_LIMIT) : 0); // if we have a page set the offset
+	//var offset = ((!blank(params.page))? (params.page * WORD_LIMIT) : 0); // if we have a page set the offset
+	var offset = 0;
 	Word.find({}, {'_id': 0, '__v': 0}, {skip: offset, limit: WORD_LIMIT}, function(error, word){
 		if(error){
 			return next( new restify.InvalidArgumentError( JSON.stringify(error.errors) ) );

@@ -15,7 +15,9 @@
 .pace-inactive {
   display: none;
 }
-
+html {
+       overflow-y: scroll;
+}
 
 
 body{
@@ -114,4 +116,39 @@ body{
 
 .pure-button-secondary {
 	background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+
+
+.card.ng-enter, 
+.card.ng-leave, 
+.card.ng-move {
+  -webkit-transition: 0.5s linear all;
+  transition: 0.5s linear all;
+  position:relative;
+}
+
+.card.ng-enter {
+  left:-10px;
+  opacity:0;
+}
+.card.ng-enter.ng-enter-active {
+  left:0;
+  opacity:1;
+}
+
+.card.ng-leave {
+  left:0;
+  opacity:1;
+}
+.card.ng-leave.ng-leave-active {
+  left:-10px;
+  opacity:0;
+}
+
+.card.ng-move {
+  opacity:0.5;
+}
+.card.ng-move.ng-move-active {
+  opacity:1;
 }

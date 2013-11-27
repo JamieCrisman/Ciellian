@@ -24,16 +24,30 @@ var token = null;
 $(document).ready(function(){
 });
 
-var app = angular.module('mblex', []);
-app.controller('mblSystem', function($scope){
+var app = angular.module('mblex', ['ngAnimate']);
+app.filter('getByProperty', function() {
+    return function(propertyName, propertyValue, collection) {
+        var i=0, len=collection.length;
+        for (; i<len; i++) {
+            if (collection[i][propertyName] == +propertyValue) {
+                return collection[i];
+            }
+        }
+        return null;
+    }
+});
+app.controller('mblSystem', function($scope, $filter){
 	$scope.pass = "";
 	$scope.connectionError = null;
-	$scope.words = {};
+	$scope.words = [];
 	$scope.page = 0;
 	$scope.totalCount = 0;
 	$scope.currentTotal = 0;
 	$scope.plim = 0;
+	$scope.searchBy = "";
+	$scope.pageLimit = 50;
 	$scope.focusWord = null;
+	$scope.wordFocused = false;
 	$(function() {
 		$.ajaxSetup({
 			dataType: 'json',
@@ -70,7 +84,7 @@ app.controller('mblSystem', function($scope){
 		$scope.connectionError = null;
 	}
 	//initial load
-	$.get("http://127.0.0.1:3000/word", function(data){
+	$.get("http://192.168.1.19:3000/word", function(data){
 		$scope.$apply(function(){
 			//$scope.words = data.words;
 			$scope.plim = data.limit;
@@ -81,27 +95,32 @@ app.controller('mblSystem', function($scope){
 		console.log(data);
 	});
 	$scope.setPage = function(page){
-		console.log(page);
+		//console.log(page);
 		$scope.page = page;
-		$scope.getMoreWords($scope.page);
+		//$scope.getMoreWords($scope.page);
 		//TODO: logic to know if we need to query for more words or if we have them loaded already
 	}
 	$scope.getMoreWords = function(page){
 		var d = {"page": page};
-		$.get("http://127.0.0.1:3000/getwords", d, function(data){
+		$.get("http://192.168.1.19:3000/getwords", d, function(data){
 			//console.log(data);
 			$scope.$apply(function(){
-				//$scope.words = data.words;
-				$.each(data.words, function(index, value){
+				$scope.words = data.words;
+				//console.log($scope.words);
+				/*$.each(data.words, function(index, value){
 					//console.log(value.name);
 					$scope.words[value.name] = value;
 				});
+				console.log($scope.words);
+				*/
 				$scope.currentTotal = data.count;
+
 			});
 			//TODO: cache words
 		});
 	}
-	$scope.getWord = function(word){
+	/*
+	$scope.getWord = function(w){
 		if(!blank($scope.words[word])){
 			$scope.focusWord = $scope.words[word];
 		}else{
@@ -109,6 +128,56 @@ app.controller('mblSystem', function($scope){
 				console.log(data);
 				$scope.focusWord = data;
 			});
+		}
+		
+		console.log(w);
+		console.log($scope.words);
+		console.log($filter('getByProperty')('name', w, $scope.words));
+		$scope.focusWord = $filter('getByProperty')('name', w, $scope.words);
+	}
+	*/
+	$scope.clearFocusWord = function(){
+		$scope.wordFocused = false;
+		$scope.focusWord = null;
+	}
+	$scope.getWord = function(n) {
+		var found = $filter('filter')($scope.words, {name: n}, true);
+		//console.log(found[0]);
+		if (found.length) {
+			$scope.focusWord = found[0];
+			$scope.wordFocused = true;
+		} else {
+			$scope.focusWord = null;
+		}
+	}
+	$scope.filteredWords = [];
+	$scope.filterWords = function(){
+		console.log("!!!");
+		if(!blank($scope.searchBy) && $scope.searchBy == $scope.filterQ){
+			var found = $filter('filter')($scope.words, $scope.searchBy, false);
+			//console.log(found[0]);
+			if (found.length) {
+				$scope.currentTotal = found.length;
+				if($scope.page > ($scope.currentTotal / $scope.pageLimit)-1){
+					$scope.page = 0; //failsafe reset to pg 1
+				}
+				$scope.filteredWords = found;
+			} else {
+				$scope.currentTotal = 0;
+				$scope.filteredWords = [];
+			}
+		}else{
+			$scope.currentTotal = $scope.words.length;
+			$scope.filteredWords = $scope.words;
+		}
+		return $scope.wordsOnPage($scope.filteredWords);
+	}
+
+	$scope.wordsOnPage = function(w){
+		if(w){
+			return w.slice($scope.page * $scope.pageLimit, $scope.page*$scope.pageLimit+$scope.pageLimit);
+		}else{
+			return [];
 		}
 	}
 
