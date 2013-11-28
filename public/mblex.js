@@ -67,7 +67,7 @@ app.animation('.card', function() {
 });
 
 app.controller('mblSystem', function($scope, $filter){
-	$scope.pass = "";
+	$scope.pass = "a";
 	$scope.connectionError = null;
 	$scope.words = [];
 	$scope.page = 0;
@@ -79,6 +79,18 @@ app.controller('mblSystem', function($scope, $filter){
 	$scope.focusWord = null;
 	$scope.wordFocused = false;
 	$scope.showPass = false;
+	$scope.newWord = {
+		name: "", 
+		meaning: [""], 
+		explanation: "", 
+		root: [""], 
+		synonym: [""], 
+		antonym: [""], 
+		counterpart: [""],
+		category: "",
+		relatedTerms: [""]
+	};
+
 	$(function() {
 		$.ajaxSetup({
 			dataType: 'json',
