@@ -25,10 +25,14 @@ var restify = require("restify"),
 	userSave = require("save")('user'),
 	mongoose = require("mongoose");//,
 	//hash = require('./pass').hash;
+var fs = require('fs');
+eval(fs.readFileSync('pass.js')+''); //including the pass.js which includes the edit password. super hackish
+
 var url = require('url');
 var server = restify.createServer({name: "Lexicon"});
 server.use(restify.fullResponse());
 // Add headers
+
 server.use(function (req, res, next) {
 
     // Website you wish to allow to connect
@@ -109,6 +113,7 @@ var bye = new Word({
 	relatedTerms: ["apa"]
 }).save();
 
+/*
 for(var xx = 0; xx < 500; xx++){
 	var bye = new Word({
 		name: "opa" + xx, 
@@ -122,6 +127,7 @@ for(var xx = 0; xx < 500; xx++){
 		relatedTerms: ["apa" + xx]
 	}).save();
 }
+*/
 
 var WORD_LIMIT = 1024;
 

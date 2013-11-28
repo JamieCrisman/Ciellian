@@ -3,7 +3,6 @@
 	<head>
 		<title>MBLexicon</title>
 		<link rel="stylesheet" href="pure-min.css">
-		<link rel="stylesheet" href="animate.min.css">
 		<link rel="stylesheet" href="mblex.css">
 		<script src="pace.min.js"></script>
 		<script src="jquery.js"></script>
@@ -63,6 +62,12 @@
 							</div>
 							<a ng-show="focusWord" class="card pure-button pure-button-secondary pure-button-xsmall" href="javascript:void(0);" ng-click="clearFocusWord()">Ok</a>
 
+							<div class="card" ng-show="showPass">
+								<form class="pure-form">
+									<input type="password" class="pure-input-1" ng-model="pass" placeholder="Apa~">
+									<button class="pure-button pure-input-1" href="javascript:void(0)" ng-click="showPass = false">Close</button>
+								</form>
+							</div>
 
 							<div class="wordContainer card-anim" ng-hide="wordFocused">
 								<h3>
@@ -97,6 +102,12 @@
 
 		</div>
 		<footer id="footer">
+			<div id="koiContainer" ng-click="showPass = true">
+				<span class="koi">
+					<div class="merveilles bottomLeft"></div>
+					<div class="merveilles bottomRight"></div>
+				</span>
+			</div>
 			MBLexicon &Alpha;lpha API BY <a href="http://awkwardhero.com">JAMIE CRISMAN</a>
 		</footer>
 	</body>

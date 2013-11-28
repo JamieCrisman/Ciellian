@@ -36,6 +36,36 @@ app.filter('getByProperty', function() {
         return null;
     }
 });
+
+app.animation('.card', function() {
+  return {
+    enter : function(element, done) {
+      jQuery(element).css({
+        position:'relative',
+        left:-10,
+        opacity:0
+      });
+      jQuery(element).animate({
+        left:0,
+        opacity:1
+      }, done);
+    },
+
+    leave : function(element, done) {
+      jQuery(element).hide(0, done);
+    },
+
+    move : function(element, done) {
+      jQuery(element).css({
+        opacity:0.5
+      });
+      jQuery(element).animate({
+        opacity:1
+      }, done);
+    }
+  };
+});
+
 app.controller('mblSystem', function($scope, $filter){
 	$scope.pass = "";
 	$scope.connectionError = null;
@@ -45,9 +75,10 @@ app.controller('mblSystem', function($scope, $filter){
 	$scope.currentTotal = 0;
 	$scope.plim = 0;
 	$scope.searchBy = "";
-	$scope.pageLimit = 50;
+	$scope.pageLimit = 25;
 	$scope.focusWord = null;
 	$scope.wordFocused = false;
+	$scope.showPass = false;
 	$(function() {
 		$.ajaxSetup({
 			dataType: 'json',
