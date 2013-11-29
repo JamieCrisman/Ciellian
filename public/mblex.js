@@ -90,7 +90,16 @@ app.controller('mblSystem', function($scope, $filter){
 		category: "",
 		relatedTerms: [""]
 	};
-
+	$scope.addMeaning = function(imi){
+		var a = $scope.newWord.meaning;
+		if(a[a.length - 1] == ""){
+			a[a.length - 1] = imi;
+		}else{
+			a.push(imi);
+		}
+		console.log(a);
+		$scope.newWord.meaning = a;
+	}
 	$(function() {
 		$.ajaxSetup({
 			dataType: 'json',
@@ -162,6 +171,14 @@ app.controller('mblSystem', function($scope, $filter){
 			//TODO: cache words
 		});
 	}
+	$scope.saveWord = function(){
+		var d = {pass: $scope.pass, word: $scope.newWord};
+		$.post("http://192.168.1.19:3000/wordnew", d, function(data){
+			console.log(data);
+		})
+
+	}
+
 	/*
 	$scope.getWord = function(w){
 		if(!blank($scope.words[word])){

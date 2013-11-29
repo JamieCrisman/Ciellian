@@ -33,7 +33,7 @@
 							</h3>
 							<form class="pure-form">
 								<div class="newWordSection">
-									<input type="text" ng-model="newWord.name" class="pure-input-1" placeholder="name">
+									<input type="text" ng-model="newWord.name" class="pure-input-1" placeholder="name" required>
 								</div>
 								<div class="newWordSection">
 									<input type="text" class="pure-input-1" ng-model="newWord.category" placeholder="category">
@@ -43,42 +43,60 @@
 								</div>
 								<div class="newWordSection">
 									<span ng-repeat="imi in newWord.meaning track by $index">
-										<input ng-model="imi" type="text" class="pure-input-1" placeholder="meaning {{$index + 1}}">
+										<div class="newWordSection">
+											<input ng-model="imi" type="text" class="pure-input-1" ng-change="newWord.meaning[$index] = imi" placeholder="meaning {{$index + 1}}">
+											<button ng-show="newWord.meaning.length > 1" class="pure-button pure-button-warning pure-input-1" ng-click="newWord.meaning.splice($index, 1)">Remove {{imi}}</button>
+										</div>
+										<a href="javascript:void(0)" class="pure-button" ng-click="newWord.meaning.push('')">Add Meaning</a>
 									</span>
-									<button class="pure-button pure-input-1" ng-click="newWord.meaning.push('')">Add Meaning</button>
 								</div>
 								<div class="newWordSection">
-									<span ng-repeat="rr in newWord.root track by $index">
-										<input ng-model="rr" type="text" class="pure-input-1" placeholder="root {{$index + 1}}">
+									<span ng-repeat="imi in newWord.root track by $index">
+										<div class="newWordSection">
+											<input ng-model="imi" type="text" class="pure-input-1" ng-change="newWord.root[$index] = imi" placeholder="root {{$index + 1}}">
+											<button ng-show="newWord.root.length > 1" class="pure-button pure-button-warning pure-input-1" ng-click="newWord.root.splice($index, 1)">Remove {{imi}}</button>
+										</div>
+										<a href="javascript:void(0)" class="pure-button" ng-click="newWord.root.push('')">Add Root</a>
 									</span>
-									<button class="pure-button pure-input-1" ng-click="newWord.root.push('')">Add Root</button>
 								</div>
 								<div class="newWordSection">
-									<span ng-repeat="sn in newWord.synonym track by $index">
-										<input ng-model="sn" type="text" class="pure-input-1" placeholder="synonym {{$index + 1}}">
+									<span ng-repeat="imi in newWord.synonym track by $index">
+										<div class="newWordSection">
+											<input ng-model="imi" type="text" class="pure-input-1" ng-change="newWord.synonym[$index] = imi" placeholder="synonym {{$index + 1}}">
+											<button ng-show="newWord.synonym.length > 1" class="pure-button pure-button-warning pure-input-1" ng-click="newWord.synonym.splice($index, 1)">Remove {{imi}}</button>
+										</div>
+										<a href="javascript:void(0)" class="pure-button" ng-click="newWord.synonym.push('')">Add Synonym</a>
 									</span>
-									<button class="pure-button pure-input-1" ng-click="newWord.synonym.push('')">Add Synonym</button>
 								</div>
 								<div class="newWordSection">
-									<span ng-repeat="an in newWord.antonym track by $index">
-										<input ng-model="an" type="text" class="pure-input-1" placeholder="antonym {{$index + 1}}">
+									<span ng-repeat="imi in newWord.antonym track by $index">
+										<div class="newWordSection">
+											<input ng-model="imi" type="text" class="pure-input-1" ng-change="newWord.antonym[$index] = imi" placeholder="antonym {{$index + 1}}">
+											<button ng-show="newWord.antonym.length > 1" class="pure-button pure-button-warning pure-input-1" ng-click="newWord.antonym.splice($index, 1)">Remove {{imi}}</button>
+										</div>
+										<a href="javascript:void(0)" class="pure-button" ng-click="newWord.antonym.push('')">Add Antonym</a>
 									</span>
-									<button class="pure-button pure-input-1" ng-click="newWord.antonym.push('')">Add Antonym</button>
 								</div>
 								<div class="newWordSection">
-									<span ng-repeat="cpt in newWord.counterpart track by $index">
-										<input ng-model="cpt" type="text" class="pure-input-1" placeholder="counterpart {{$index + 1}}">
+									<span ng-repeat="imi in newWord.counterpart track by $index">
+										<div class="newWordSection">
+											<input ng-model="imi" type="text" class="pure-input-1" ng-change="newWord.counterpart[$index] = imi" placeholder="counterpart {{$index + 1}}">
+											<button ng-show="newWord.counterpart.length > 1" class="pure-button pure-button-warning pure-input-1" ng-click="newWord.counterpart.splice($index, 1)">Remove {{imi}}</button>
+										</div>
+										<a href="javascript:void(0)" class="pure-button" ng-click="newWord.counterpart.push('')">Add Counterpart</a>
 									</span>
-									<button class="pure-button pure-input-1" ng-click="newWord.counterpart.push('')">Add Counterpart</button>
 								</div>
 								<div class="newWordSection">
-									<span ng-repeat="rt in newWord.relatedTerms track by $index">
-										<input ng-model="rt" type="text" class="pure-input-1" placeholder="relatedTerms {{$index + 1}}">
+									<span ng-repeat="imi in newWord.relatedTerms track by $index">
+										<div class="newWordSection">
+											<input ng-model="imi" type="text" class="pure-input-1" ng-change="newWord.relatedTerms[$index] = imi" placeholder="relatedTerms {{$index + 1}}">
+											<button ng-show="newWord.relatedTerms.length > 1" class="pure-button pure-button-warning pure-input-1" ng-click="newWord.relatedTerms.splice($index, 1)">Remove {{imi}}</button>
+										</div>
+										<a href="javascript:void(0)" class="pure-button" ng-click="newWord.relatedTerms.push('')">Add Related</a>
 									</span>
-									<button class="pure-button pure-input-1" ng-click="newWord.relatedTerms.push('')">Add Related Term</button>
 								</div>
 								<div class="newWordSection">
-									<button class="pure-button pure-button-primary pure-input-1" ng-click="">Create Word</button>
+									<button class="pure-button pure-button-primary pure-input-1" ng-click="saveWord()">Create Word</button>
 								</div>
 							</form>
 						</div>

@@ -19,6 +19,17 @@ function blank(obj) {
     return false;
 }
 
+Array.prototype.clean = function(deleteValue) {
+  for (var i = 0; i < this.length; i++) {
+    if (this[i] == deleteValue) {         
+      this.splice(i, 1);
+      i--;
+    }
+  }
+  return this;
+};
+
+
 
 
 var restify = require("restify"),
@@ -225,38 +236,52 @@ server.post('/word/:word', function(req, res, next){
 	
 });
 
-server.post('/word/new', function(req, res, next){
+server.post('/wordnew', function(req, res, next){
 	var wordErrors = "";
-	if(blank(req.params.name)){
-		wordErrors += " word name cannot be blank; ";
+	var newWord = req.params.word;
+	if(!validPass(req.params.pass)){
+		wordErrors += "Bad Key";
 	}
-	if(blank(req.params.meaning)){
+
+	if(blank(newWord.name)){
+		wordErrors += " asdf word name cannot be blank; ";
+	}
+	if(blank(newWord.meaning)){
 		wordErrors += " word needs a meaning; ";
 	}
 	if(!blank(wordErrors)){
 		return next(new restify.InvalidArgumentError(wordErrors));
 	}
 	
-	Word.find({name: req.params.name.toLowerCase()}, function(error, word){
+	Word.find({name: newWord.name.toLowerCase()}, function(error, word){
+		var shinword
 		if(blank(word)){
-			var shinword = new Word({
-				name: req.params.name, 
-				meaning: req.params.meaning, 
-				explanation: ((blank(req.params.explanation))? "" : req.params.explanation), 
-				root: ((blank(req.params.root))? [] : req.params.root), 
-				synonym: ((blank(req.params.synonym))? [] : req.params.synonym), 
-				antonym: ((blank(req.params.antonym))? [] : req.params.antonym), 
-				counterpart: ((blank(req.params.counterpart))? [] : req.params.counterpart),
-				category: ((blank(req.params.category))? "" : req.params.category),
-				relatedTerms: ((blank(req.params.relatedTerms))? [] : req.params.relatedTerms)
+			shinword = new Word({
+				name: newWord.name, 
+				meaning: newWord.meaning, 
+				explanation: ((blank(newWord.explanation))? "" : newWord.explanation), 
+				root: ((blank(newWord.root))? [] : newWord.root), 
+				synonym: ((blank(newWord.synonym))? [] : newWord.synonym), 
+				antonym: ((blank(newWord.antonym))? [] : newWord.antonym), 
+				counterpart: ((blank(newWord.counterpart))? [] : newWord.counterpart),
+				category: ((blank(newWord.category))? "" : newWord.category),
+				relatedTerms: ((blank(newWord.relatedTerms))? [] : newWord.relatedTerms)
 			});
-			shinword.save();
-			console.log("Created word: ");
-			console.log(shinword);
-			res.send(shinword);
 		}else{
-			return next(new restify.InvalidArgumentError("Word Already Exists; Please Use Update"));
+			shinword = word;
+			shinword.meaning = newWord.meaning;
+			shinword.explanation = ((blank(newWord.explanation))? "" : newWord.explanation);
+			shinword.root = ((blank(newWord.root))? [] : newWord.root);
+			shinword.synonym = ((blank(newWord.synonym))? [] : newWord.synonym); 
+			shinword.antonym = ((blank(newWord.antonym))? [] : newWord.antonym);
+			shinword.counterpart = ((blank(newWord.counterpart))? [] : newWord.counterpart);
+			shinword.category = ((blank(newWord.category))? "" : newWord.category);
+			shinword.relatedTerms = ((blank(newWord.relatedTerms))? [] : newWord.relatedTerms)
 		}
+		shinword.save();
+		console.log("Created word: ");
+		console.log(shinword);
+		res.send(shinword);
 	});
 	
 });
