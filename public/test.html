@@ -33,8 +33,9 @@
 							</h3>
 							<form class="pure-form">
 								<div class="newWordSection">
-									<input type="text" ng-model="newWord.name" class="pure-input-1" placeholder="name" required>
+									<input type="text" ng-model="newWord.name" class="pure-input-1" ng-change="checkForExisting()" placeholder="name" required>
 								</div>
+								<a href="javascript:void(0)" ng-click="newWord = useExisting; useExisting = null" ng-show="useExisting">Use Existing?</a>
 								<div class="newWordSection">
 									<input type="text" class="pure-input-1" ng-model="newWord.category" placeholder="category">
 								</div>

@@ -124,6 +124,42 @@ var bye = new Word({
 	relatedTerms: ["apa"]
 }).save();
 
+var consistant = new Word({
+	name: "nakunu", 
+	meaning: ["Consistant", "Accurate"], 
+	explanation: "Agreement of truthful ideas", 
+	root: ["kunu"], 
+	synonym: [], 
+	antonym: ["nokunu"], 
+	counterpart: [],
+	category: "adjective",
+	relatedTerms: ["nokunu"]
+}).save();
+
+var contradiction = new Word({
+	name: "nokunu", 
+	meaning: ["Inconsistant", "Inaccurate"], 
+	explanation: "Disagreement of truthful ideas", 
+	root: ["kunu"], 
+	synonym: [], 
+	antonym: ["nakunu"], 
+	counterpart: [],
+	category: "adjective",
+	relatedTerms: ["nakunu"]
+}).save();
+
+var truth = new Word({
+	name: "kunu", 
+	meaning: ["truth"], 
+	explanation: "root meaning truth.", 
+	root: [], 
+	synonym: [], 
+	antonym: [], 
+	counterpart: [],
+	category: "root",
+	relatedTerms: ["nakunu", "nokunu"]
+}).save();
+
 /*
 for(var xx = 0; xx < 500; xx++){
 	var bye = new Word({
@@ -254,7 +290,7 @@ server.post('/wordnew', function(req, res, next){
 	}
 	
 	Word.find({name: newWord.name.toLowerCase()}, function(error, word){
-		var shinword
+		var shinword;
 		if(blank(word)){
 			shinword = new Word({
 				name: newWord.name, 
@@ -268,7 +304,7 @@ server.post('/wordnew', function(req, res, next){
 				relatedTerms: ((blank(newWord.relatedTerms))? [] : newWord.relatedTerms)
 			});
 		}else{
-			shinword = word;
+			shinword = word[0];
 			shinword.meaning = newWord.meaning;
 			shinword.explanation = ((blank(newWord.explanation))? "" : newWord.explanation);
 			shinword.root = ((blank(newWord.root))? [] : newWord.root);

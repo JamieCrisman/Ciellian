@@ -67,7 +67,7 @@ app.animation('.card', function() {
 });
 
 app.controller('mblSystem', function($scope, $filter){
-	$scope.pass = "a";
+	$scope.pass = "";
 	$scope.connectionError = null;
 	$scope.words = [];
 	$scope.page = 0;
@@ -79,6 +79,7 @@ app.controller('mblSystem', function($scope, $filter){
 	$scope.focusWord = null;
 	$scope.wordFocused = false;
 	$scope.showPass = false;
+	$scope.useExisting = null;
 	$scope.newWord = {
 		name: "", 
 		meaning: [""], 
@@ -136,7 +137,7 @@ app.controller('mblSystem', function($scope, $filter){
 		$scope.connectionError = null;
 	}
 	//initial load
-	$.get("http://192.168.1.19:3000/word", function(data){
+	$.get("http://127.0.0.1:3000/word", function(data){
 		$scope.$apply(function(){
 			//$scope.words = data.words;
 			$scope.plim = data.limit;
@@ -154,7 +155,7 @@ app.controller('mblSystem', function($scope, $filter){
 	}
 	$scope.getMoreWords = function(page){
 		var d = {"page": page};
-		$.get("http://192.168.1.19:3000/getwords", d, function(data){
+		$.get("http://127.0.0.1:3000/getwords", d, function(data){
 			//console.log(data);
 			$scope.$apply(function(){
 				$scope.words = data.words;
@@ -173,7 +174,7 @@ app.controller('mblSystem', function($scope, $filter){
 	}
 	$scope.saveWord = function(){
 		var d = {pass: $scope.pass, word: $scope.newWord};
-		$.post("http://192.168.1.19:3000/wordnew", d, function(data){
+		$.post("http://127.0.0.1:3000/wordnew", d, function(data){
 			console.log(data);
 		})
 
@@ -196,6 +197,27 @@ app.controller('mblSystem', function($scope, $filter){
 		$scope.focusWord = $filter('getByProperty')('name', w, $scope.words);
 	}
 	*/
+	$scope.checkForExisting = function(){
+		var found = $filter('filter')($scope.words, {name: $scope.newWord.name}, true);
+		if(found.length){
+			found[0];
+
+			$scope.useExisting = {
+				name: found[0].name, 
+				meaning: found[0].meaning, 
+				explanation: (!blank(found[0].explanation)? found[0].explanation : ""), 
+				root: (!blank(found[0].root)? found[0].root : [""]),
+				synonym: (!blank(found[0].synonym)? found[0].synonym : [""]),
+				antonym: (!blank(found[0].antonym)? found[0].antonym : [""]),
+				counterpart: (!blank(found[0].counterpart)? found[0].counterpart : [""]),
+				category: (!blank(found[0].category)? found[0].category : ""),
+				relatedTerms: (!blank(found[0].relatedTerms)? found[0].relatedTerms : [""]),
+			};
+		}else{
+			$scope.useExisting = null;
+		}
+	}
+
 	$scope.clearFocusWord = function(){
 		$scope.wordFocused = false;
 		$scope.focusWord = null;
