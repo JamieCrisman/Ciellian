@@ -138,7 +138,7 @@ var consistant = new Word({
 
 var contradiction = new Word({
 	name: "nokunu", 
-	meaning: ["Inconsistant", "Inaccurate"], 
+	meaning: ["Contradiction", "Inconsistent", "Inaccurate"], 
 	explanation: "Disagreement of truthful ideas", 
 	root: ["kunu"], 
 	synonym: [], 
@@ -323,8 +323,7 @@ server.post('/wordnew', function(req, res, next){
 });
 
 server.del('/word/:word', function(req, res, next){
-	//this is totally safe</sarcasm>
-	if(req.params.secret == "BOSSKEY25"){
+	if(validPass(req.params.pass)){
 		Word.remove({name: req.params.word.toLowerCase()}, function(error, word){
 			if(error){
 				return next( new restify.InvalidArgumentError( JSON.stringify(error.errors) ) );

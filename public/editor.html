@@ -27,7 +27,7 @@
 						<h2>Apa</h2>
 						<h3>-lexicon-</h3>
 					</div>
-						<div class="card" ng-show="pass">
+						<div class="card">
 							<h3>
 								-New Word-
 							</h3>
@@ -99,6 +99,23 @@
 								<div class="newWordSection">
 									<button class="pure-button pure-button-primary pure-input-1" ng-click="saveWord()">Create Word</button>
 								</div>
+
+								<div class="newWordSection" ng-hide="deleteConfirm">
+									<label>
+										<input
+										type="checkbox"
+										value="true"
+										ng-checked="deleteConfirm"
+										ng-click="deleteConfirm = !deleteConfirm"
+										> Delete Confirm
+									</label>
+								</div>
+
+								<div class="newWordSection" ng-show="deleteConfirm">
+									<button class="pure-button pure-input-1" ng-click="deleteWord()">Delete Word</button>
+								</div>
+
+								<input type="password" class="pure-input-1" ng-model="pass" placeholder="Apa~">
 							</form>
 						</div>
 							<div class="wordLine card" ng-show="focusWord">
@@ -134,13 +151,6 @@
 							</div>
 							<a ng-show="focusWord" class="card pure-button pure-button-secondary pure-button-xsmall" href="javascript:void(0);" ng-click="clearFocusWord()">Ok</a>
 
-							<div class="card" ng-show="showPass">
-								<form class="pure-form">
-									<input type="password" class="pure-input-1" ng-model="pass" placeholder="Apa~">
-									<button class="pure-button pure-input-1" ng-click="showPass = false">Close</button>
-								</form>
-							</div>
-
 							<div class="wordContainer card-anim" ng-hide="wordFocused">
 								<h3>
 									Words
@@ -174,7 +184,7 @@
 
 		</div>
 		<footer id="footer">
-			<div id="koiContainer" ng-click="showPass = true">
+			<div id="koiContainer">
 				<span class="koi">
 					<div class="merveilles bottomLeft"></div>
 					<div class="merveilles bottomRight"></div>

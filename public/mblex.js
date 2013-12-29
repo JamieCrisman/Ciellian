@@ -78,8 +78,8 @@ app.controller('mblSystem', function($scope, $filter){
 	$scope.pageLimit = 25;
 	$scope.focusWord = null;
 	$scope.wordFocused = false;
-	$scope.showPass = false;
 	$scope.useExisting = null;
+	$scope.deleteConfirm = false;
 	$scope.newWord = {
 		name: "", 
 		meaning: [""], 
@@ -98,7 +98,7 @@ app.controller('mblSystem', function($scope, $filter){
 		}else{
 			a.push(imi);
 		}
-		console.log(a);
+		//console.log(a);
 		$scope.newWord.meaning = a;
 	}
 	$(function() {
@@ -145,7 +145,7 @@ app.controller('mblSystem', function($scope, $filter){
 		});
 		//$scope.words = data;
 		$scope.getMoreWords($scope.page);
-		console.log(data);
+		//console.log(data);
 	});
 	$scope.setPage = function(page){
 		//console.log(page);
@@ -175,9 +175,51 @@ app.controller('mblSystem', function($scope, $filter){
 	$scope.saveWord = function(){
 		var d = {pass: $scope.pass, word: $scope.newWord};
 		$.post("http://127.0.0.1:3000/wordnew", d, function(data){
-			console.log(data);
+			$scope.getMoreWords($scope.page);
+			$scope.$apply(function(){
+				$scope.newWord = {
+					name: "", 
+					meaning: [""], 
+					explanation: "", 
+					root: [""], 
+					synonym: [""], 
+					antonym: [""], 
+					counterpart: [""],
+					category: "",
+					relatedTerms: [""]
+				};
+			});
 		})
 
+	}
+
+	$scope.deleteWord = function(){
+		if(!$scope.deleteConfirm){
+			return;
+		}
+		var d = {pass: $scope.pass, word: $scope.newWord.name};
+		$.ajax({
+			url: 'http://127.0.0.1:3000/word/'+d["word"],
+			type: 'DELETE',
+			data: d,
+			success: function(response) {
+				$scope.getMoreWords($scope.page);
+				$scope.deleteConfirm = false;
+				$scope.$apply(function(){
+					$scope.newWord = {
+						name: "", 
+						meaning: [""], 
+						explanation: "", 
+						root: [""], 
+						synonym: [""], 
+						antonym: [""], 
+						counterpart: [""],
+						category: "",
+						relatedTerms: [""]
+					};
+				});
+			}
+		});
 	}
 
 	/*
@@ -198,9 +240,13 @@ app.controller('mblSystem', function($scope, $filter){
 	}
 	*/
 	$scope.checkForExisting = function(){
+		$scope.deleteConfirm = false;
 		var found = $filter('filter')($scope.words, {name: $scope.newWord.name}, true);
+		if(blank($scope.newWord.name)){
+			found = [];
+		}
 		if(found.length){
-			found[0];
+			//found[0];
 
 			$scope.useExisting = {
 				name: found[0].name, 
@@ -234,7 +280,6 @@ app.controller('mblSystem', function($scope, $filter){
 	}
 	$scope.filteredWords = [];
 	$scope.filterWords = function(){
-		console.log("!!!");
 		if(!blank($scope.searchBy) && $scope.searchBy == $scope.filterQ){
 			var found = $filter('filter')($scope.words, $scope.searchBy, false);
 			//console.log(found[0]);
