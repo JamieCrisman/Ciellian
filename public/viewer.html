@@ -23,9 +23,15 @@
 			<section class="pure-g-f">
 				<div class="pure-u-1-3"></div>
 				<div class="pure-u-1-3">
-					<div class="sectionHeader">
+					<div class="sectionHeader card">
 						<h2>Apa</h2>
-						<h3>-lexicon-</h3>
+						<p>
+							This is a <strong>lexicon</strong> for my to-be-named conlang.
+						</p>
+						<p>
+							You can find more documentation on the <a href="http://jamiecrisman.github.io/MindBodyLang">github page</a> <br>
+							As of right now there are {{totalCount}} total words in the conlang.
+						</p>
 					</div>
 					<div class="wordLine card" ng-show="focusWord">
 						<div class="wordHeader"><span class="wordName">{{focusWord.name}}</span> <span ng-repeat="imi in focusWord.meaning"> {{imi}};</span></div>

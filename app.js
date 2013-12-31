@@ -151,13 +151,132 @@ var contradiction = new Word({
 var truth = new Word({
 	name: "kunu", 
 	meaning: ["truth"], 
-	explanation: "root meaning truth.", 
+	explanation: "", 
+	root: ["aku"], 
+	synonym: [], 
+	antonym: [], 
+	counterpart: [],
+	category: "noun",
+	relatedTerms: ["aku", "nakunu", "nokunu"]
+}).save();
+
+var one = new Word({
+	name: "aku", 
+	meaning: ["true", "one"], 
+	explanation: "true or the number 1",
+	root: [], 
+	synonym: [], 
+	antonym: ["aku"], 
+	counterpart: [],
+	category: "number",
+	relatedTerms: ["kunu", "oku"]
+}).save();
+var zero = new Word({
+	name: "oku", 
+	meaning: ["false", "zero"], 
+	explanation: "zero or the number 0",
+	root: [], 
+	synonym: [], 
+	antonym: ["aku"], 
+	counterpart: [],
+	category: "number",
+	relatedTerms: ["kunu", "aku"]
+}).save();
+
+var light = new Word({
+	name: "chii", 
+	meaning: ["light"], 
+	explanation: "stimulates sight to make things visable.",
+	root: [], 
+	synonym: [], 
+	antonym: ["chizoe"], 
+	counterpart: [],
+	category: "noun",
+	relatedTerms: ["chimezo"]
+}).save();
+
+var contain = new Word({
+	name: "zoe", 
+	meaning: ["contain", "own"], 
+	explanation: "to contain or have ownership",
 	root: [], 
 	synonym: [], 
 	antonym: [], 
 	counterpart: [],
-	category: "root",
-	relatedTerms: ["nakunu", "nokunu"]
+	category: "verb",
+	relatedTerms: []
+}).save();
+
+var lack = new Word({
+	name: "mezoe", 
+	meaning: ["lack"], 
+	explanation: "state without ownership. Doesn't have enough of something",
+	root: ["zoe"], 
+	synonym: [], 
+	antonym: ["mizoe"], 
+	counterpart: [],
+	category: "noun",
+	relatedTerms: ["zoe", "mizoe"]
+}).save();
+
+var abundance = new Word({
+	name: "mizoe", 
+	meaning: ["abundance"], 
+	explanation: "state of plentiful ownership.",
+	root: ["zoe"], 
+	synonym: [], 
+	antonym: ["mezoe"], 
+	counterpart: [],
+	category: "noun",
+	relatedTerms: ["mezoe", "zoe"]
+}).save();
+
+var darkness = new Word({
+	name: "mezochi", 
+	meaning: ["darkness"], 
+	explanation: "lack of light.",
+	root: ["mezoe", "chii"], 
+	synonym: [], 
+	antonym: ["chii"], 
+	counterpart: [],
+	category: "noun",
+	relatedTerms: ["chii"]
+}).save();
+
+var complete = new Word({
+	name: "paze", 
+	meaning: ["complete"], 
+	explanation: "absolute; total; greatest degree.",
+	root: [], 
+	synonym: [], 
+	antonym: ["opaze"], 
+	counterpart: [],
+	category: "adjective",
+	relatedTerms: ["opaze"]
+}).save();
+
+var complete = new Word({
+	name: "opaze", 
+	meaning: ["incomplete"], 
+	explanation: "not complete",
+	root: ["paze"], 
+	synonym: [], 
+	antonym: ["paze"], 
+	counterpart: [],
+	category: "adjective",
+	relatedTerms: ["paze"]
+}).save();
+
+var unknown = new Word({
+	name: "shiro", 
+	meaning: ["unknown", "variable"], 
+	explanation: "an unknown entity; a variable",
+	root: [], 
+	synonym: [], 
+	antonym: [], 
+	counterpart: [],
+	category: "noun",
+	relatedTerms: []
 }).save();
 
 /*
