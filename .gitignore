@@ -1,3 +1,4 @@
 _site
 *.sublime*
 pass.js
+node_modules
