@@ -255,7 +255,7 @@ var complete = new Word({
 	relatedTerms: ["opaze"]
 }).save();
 
-var complete = new Word({
+var incomplete = new Word({
 	name: "opaze", 
 	meaning: ["incomplete"], 
 	explanation: "not complete",
@@ -277,6 +277,42 @@ var unknown = new Word({
 	counterpart: [],
 	category: "noun",
 	relatedTerms: []
+}).save();
+
+var see = new Word({
+	name: "gai", 
+	meaning: ["see"], 
+	explanation: "(to) see",
+	root: [], 
+	synonym: [], 
+	antonym: [], 
+	counterpart: [],
+	category: "action",
+	relatedTerms: []
+}).save();
+
+var method = new Word({
+	name: "zio", 
+	meaning: ["way", "method"], 
+	explanation: "how something is done. which direction.",
+	root: [], 
+	synonym: [], 
+	antonym: [], 
+	counterpart: [],
+	category: "noun",
+	relatedTerms: []
+}).save();
+
+var perspective = new Word({
+	name: "gaizo", 
+	meaning: ["perspective", "point of view"], 
+	explanation: "a way of seeing; perspective",
+	root: ["gai", "zio"], 
+	synonym: [], 
+	antonym: [], 
+	counterpart: [],
+	category: "noun",
+	relatedTerms: ["gai", "zio"]
 }).save();
 
 /*
