@@ -385,42 +385,6 @@ server.get('/word/:word', function(req, res, next){
 	});
 });
 
-//update Function
-server.post('/word/:word', function(req, res, next){
-	//find word
-	//update stuff
-	//send update resp
-
-	var wordErrors = "";
-	if(blank(req.params.name)){
-		wordErrors += " word name cannot be blank; ";
-	}
-	if(!blank(wordErrors)){
-		return next(new restify.InvalidArgumentError(wordErrors));
-	}
-	
-	Word.find({name: req.params.name.toLowerCase()}, function(error, word){
-		if(!blank(word[0])){
-			var w = word[0]; //should only be the first word
-			w.meaning = (blank(req.params.meaning))? w.meaning : req.params.meaning;
-			w.explanation  = (blank(req.params.explanation))? w.explanation : req.params.explanation;
-			w.root  = (blank(req.params.root))? w.root : req.params.root;
-			w.synonym  = (blank(req.params.synonym))? w.synonym : req.params.synonym;
-			w.antonym  = (blank(req.params.antonym))? w.antonym : req.params.antonym;
-			w.counterpart  = (blank(req.params.counterpart))? w.counterpart : req.params.counterpart;
-			w.category  = (blank(req.params.category))? w.category : req.params.category;
-			w.relatedTerms  = (blank(req.params.relatedTerms))? w.relatedTerms : req.params.relatedTerms;
-			w.save();
-			console.log("Updated word: ");
-			console.log(w);
-			res.send(w);	
-		}else{
-			return next(new restify.InvalidArgumentError("Couldn't find the word? Did you mean to create a new one?"));
-		}
-	});
-	
-});
-
 server.post('/wordnew', function(req, res, next){
 	var wordErrors = "";
 	var newWord = req.params.word;
