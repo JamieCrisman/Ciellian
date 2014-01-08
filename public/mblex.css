@@ -84,6 +84,23 @@ body{
 	margin:0 1rem 1rem;
 	border-radius:3px;
 }
+.edicard{
+	padding: 4px;
+	width: 100%;
+	border: 1px solid #dedede;
+	box-shadow:0 1px 2px #aaa;
+	background:white;
+	margin:0 1rem 0.2rem;
+	border-radius:3px;
+}
+.editorName{
+	font-weight: bold;
+	font-size: 24px;
+}
+.editorLine .editorHeader{
+	font-weight: normal;
+	font-size: 16px;
+}
 
 .wordLine .wordHeader .wordName{
 	font-weight: bold;
