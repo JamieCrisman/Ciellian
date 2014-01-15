@@ -309,6 +309,18 @@ var perspective = new Word({
 	relatedTerms: ["gai", "zio"]
 }).save();
 
+var certain = new Word({
+	name: "mashira", 
+	meaning: ["certain", "specific"], 
+	explanation: "completely known. a known set",
+	root: ["shiro"], 
+	synonym: [], 
+	antonym: [], 
+	counterpart: [],
+	category: "adjective",
+	relatedTerms: ["shiro"]
+}).save();
+
 /*
 for(var xx = 0; xx < 500; xx++){
 	var bye = new Word({
