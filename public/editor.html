@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html ng-app="mblex">
+	<head>
+		<title>MBLexicon</title>
+		<link rel="stylesheet" href="pure-min.css">
+		<link rel="stylesheet" href="mblex.css">
+		<script src="pace.min.js"></script>
+		<script src="jquery.js"></script>
+		<script src="angular.min.js"></script>
+		<script src="angular-animate.min.js"></script>
+		<script src="editor.js"></script>
+	</head>
+	<body ng-controller="mblSystem">
+		<div id="content">
+			<div class="pure-g" id="connectionErrorContainer" ng-show="connectionError">
+				<div class="pure-u-1" style="text-align: center">
+					<h1>There was a problem :C</h1>
+					<h3>{{connectionError}}</h3>
+					<a href="javascript:void(0)" ng-click="clearConnectionError()" class="pure-button">Clear Error</a>
+				</div>
+			</div>
+
+			<section class="pure-g-f">
+				<div class="pure-u-1-3" style="margin-right: 40px">
+					<div class="sectionHeader card">
+						<h2>-Apa Lexicon-</h2>
+					</div>
+						<div class="card">
+							<h3>
+								-New Word-
+							</h3>
+							<form class="pure-form">
+								<div class="newWordSection">
+									<input type="text" ng-model="newWord.name" class="pure-input-1" ng-change="checkForExisting()" placeholder="name" required>
+								</div>
+								<a href="javascript:void(0)" ng-click="newWord = useExisting; useExisting = null" ng-show="useExisting">Use Existing?</a>
+								<div class="newWordSection">
+									<input type="text" class="pure-input-1" ng-model="newWord.category" placeholder="category">
+								</div>
+								<div class="newWordSection">
+									<input type="text" class="pure-input-1" ng-model="newWord.explanation" placeholder="explanation">
+								</div>
+								<div class="newWordSection">
+									<span ng-repeat="imi in newWord.meaning track by $index">
+										<div class="newWordSection">
+											<input ng-model="imi" type="text" class="pure-input-1" ng-change="newWord.meaning[$index] = imi" placeholder="meaning {{$index + 1}}">
+											<button ng-show="newWord.meaning.length > 1" class="pure-button pure-button-warning pure-input-1" ng-click="newWord.meaning.splice($index, 1)">Remove {{imi}}</button>
+										</div>
+										<a href="javascript:void(0)" class="pure-button" ng-click="newWord.meaning.push('')">Add Meaning</a>
+									</span>
+								</div>
+								<div class="newWordSection">
+									<span ng-repeat="imi in newWord.root track by $index">
+										<div class="newWordSection">
+											<input ng-model="imi" type="text" class="pure-input-1" ng-change="newWord.root[$index] = imi" placeholder="root {{$index + 1}}">
+											<button ng-show="newWord.root.length > 1" class="pure-button pure-button-warning pure-input-1" ng-click="newWord.root.splice($index, 1)">Remove {{imi}}</button>
+										</div>
+										<a href="javascript:void(0)" class="pure-button" ng-click="newWord.root.push('')">Add Root</a>
+									</span>
+								</div>
+								<div class="newWordSection">
+									<span ng-repeat="imi in newWord.synonym track by $index">
+										<div class="newWordSection">
+											<input ng-model="imi" type="text" class="pure-input-1" ng-change="newWord.synonym[$index] = imi" placeholder="synonym {{$index + 1}}">
+											<button ng-show="newWord.synonym.length > 1" class="pure-button pure-button-warning pure-input-1" ng-click="newWord.synonym.splice($index, 1)">Remove {{imi}}</button>
+										</div>
+										<a href="javascript:void(0)" class="pure-button" ng-click="newWord.synonym.push('')">Add Synonym</a>
+									</span>
+								</div>
+								<div class="newWordSection">
+									<span ng-repeat="imi in newWord.antonym track by $index">
+										<div class="newWordSection">
+											<input ng-model="imi" type="text" class="pure-input-1" ng-change="newWord.antonym[$index] = imi" placeholder="antonym {{$index + 1}}">
+											<button ng-show="newWord.antonym.length > 1" class="pure-button pure-button-warning pure-input-1" ng-click="newWord.antonym.splice($index, 1)">Remove {{imi}}</button>
+										</div>
+										<a href="javascript:void(0)" class="pure-button" ng-click="newWord.antonym.push('')">Add Antonym</a>
+									</span>
+								</div>
+								<div class="newWordSection">
+									<span ng-repeat="imi in newWord.counterpart track by $index">
+										<div class="newWordSection">
+											<input ng-model="imi" type="text" class="pure-input-1" ng-change="newWord.counterpart[$index] = imi" placeholder="counterpart {{$index + 1}}">
+											<button ng-show="newWord.counterpart.length > 1" class="pure-button pure-button-warning pure-input-1" ng-click="newWord.counterpart.splice($index, 1)">Remove {{imi}}</button>
+										</div>
+										<a href="javascript:void(0)" class="pure-button" ng-click="newWord.counterpart.push('')">Add Counterpart</a>
+									</span>
+								</div>
+								<div class="newWordSection">
+									<span ng-repeat="imi in newWord.relatedTerms track by $index">
+										<div class="newWordSection">
+											<input ng-model="imi" type="text" class="pure-input-1" ng-change="newWord.relatedTerms[$index] = imi" placeholder="relatedTerms {{$index + 1}}">
+											<button ng-show="newWord.relatedTerms.length > 1" class="pure-button pure-button-warning pure-input-1" ng-click="newWord.relatedTerms.splice($index, 1)">Remove {{imi}}</button>
+										</div>
+										<a href="javascript:void(0)" class="pure-button" ng-click="newWord.relatedTerms.push('')">Add Related</a>
+									</span>
+								</div>
+								<div class="newWordSection">
+									<button class="pure-button pure-button-primary pure-input-1" ng-click="saveWord()">Create Word</button>
+								</div>
+
+								<div class="newWordSection" ng-hide="deleteConfirm">
+									<label>
+										<input
+										type="checkbox"
+										value="true"
+										ng-checked="deleteConfirm"
+										ng-click="deleteConfirm = !deleteConfirm"
+										> Delete Confirm
+									</label>
+								</div>
+
+								<div class="newWordSection" ng-show="deleteConfirm">
+									<button class="pure-button pure-input-1" ng-click="deleteWord()">Delete Word</button>
+								</div>
+
+								<input type="password" class="pure-input-1" ng-model="pass" placeholder="Apa~">
+							</form>
+						</div>
+					</div>
+					<div class="pure-u-1-3" style="margin-right: 50px;">
+
+						<div class="wordContainer card-anim">
+							<h3>
+								Words
+							</h3>
+							<div class="card">
+								<form class="pure-form">
+									<input type="text" class="pure-input-1" ng-model="filterQ" placeholder="Search">
+									<button class="pure-button pure-button-secondary pure-input-1" ng-click="searchBy = filterQ">Search</button>
+								</form>
+							</div>
+
+							<a class="card pure-button pure-button-secondary" href="javascript:void(0);" ng-show="page != 0" ng-click="setPage(page-1)">Previous Words</a>
+							<div class="editorLine edicard" ng-repeat="word in filterWords()" ng-click="getWord(word.name)">
+								<div class="editorHeader"><span class="editorName">{{word.name}}</span> <span ng-repeat="imi in word.meaning"> {{imi}};</span><span> {{word.explanation}};</span></div>
+								<div class="wordInfo hide">
+									<div class="wordExplanation">{{word.explanation}}</div>
+									<div><strong>Antonyms:</strong> {{word.antonym}}</div>
+									<div><strong>Synonyms:</strong> {{word.synonym}}</div>
+									<div><strong>Category:</strong> {{word.category}}</div>
+									<div><strong>Counterpart:</strong> {{word.counterpart}}</div>
+									<div><strong>Root:</strong>{{word.root}}</div>
+									<div><strong>Related:</strong>{{word.relatedTerms}}</div>
+								</div>
+							</div>
+							<a class="card pure-button pure-button-secondary" href="javascript:void(0);" ng-show="(page) < ((currentTotal / pageLimit)-1)" ng-click="setPage(page+1)">More Words</a>
+						</div>
+					</div>
+					<div class="pure-u-1-5">
+						<div class="wordLine card" ng-show="focusWord">
+							<div class="wordHeader"><span class="wordName">{{focusWord.name}}</span> <span ng-repeat="imi in focusWord.meaning"> {{imi}};</span></div>
+							<div class="wordInfo">
+								<div ng-show="focusWord.category">
+									<strong>Category:</strong> {{focusWord.category}}
+								</div>
+								<div class="wordExplanation">
+									{{focusWord.explanation}}
+								</div>
+								<div ng-show="focusWord.root">
+									<strong>Root:</strong>
+									<span ng-repeat="rr in focusWord.root"> <a href="javascript:void(0)" ng-click="getWord(rr)">{{rr}};</a></span>
+								</div>
+								<div ng-show="focusWord.antonym">
+									<strong>Antonyms:</strong> 
+									<span ng-repeat="ant in focusWord.antonym"> <a href="javascript:void(0)" ng-click="getWord(ant)">{{ant}};</a></span>
+								</div>
+								<div ng-show="focusWord.synonym">
+									<strong>Synonyms:</strong>
+									<span ng-repeat="syn in focusWord.synonym"> <a href="javascript:void(0)" ng-click="getWord(syn)">{{syn}};</a></span>
+								</div>
+								<div ng-show="focusWord.counterpart">
+									<strong>Counterpart:</strong>
+									<span ng-repeat="cp in focusWord.counterpart"> <a href="javascript:void(0)" ng-click="getWord(cp)">{{cp}};</a></span>
+								</div>
+								<div ng-show="focusWord.relatedTerms">
+									<strong>Related:</strong>
+									<span ng-repeat="rt in focusWord.relatedTerms"> <a href="javascript:void(0)" ng-click="getWord(rt)">{{rt}};</a></span>
+								</div>
+							</div>
+						</div>
+						<a ng-show="focusWord" class="card pure-button pure-button-secondary pure-button-xsmall" href="javascript:void(0);" ng-click="clearFocusWord()">Ok</a>
+					</div>
+			</section>
+
+
+		</div>
+		<footer id="footer">
+			<div id="koiContainer">
+				<span class="koi">
+					<div class="merveilles bottomLeft"></div>
+					<div class="merveilles bottomRight"></div>
+				</span>
+			</div>
+			MBLexicon &Alpha;lpha API BY <a href="http://awkwardhero.com">JAMIE CRISMAN</a>
+		</footer>
+	</body>
+</html>
