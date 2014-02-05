@@ -322,6 +322,7 @@ var certain = new Word({
 }).save();
 
 /*
+// for testing some amount of test words
 for(var xx = 0; xx < 500; xx++){
 	var bye = new Word({
 		name: "opa" + xx, 
